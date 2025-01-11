@@ -1,21 +1,34 @@
-package TestsDir;
+package Guru99TaskPages;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.time.Duration;
 
-import Guru99TaskPages.MobilePage;
-import org.testng.annotations.Test;
-import static org.testng.Assert.assertTrue;
-public class HomePageTest extends TaskSetup{
+public class HomePage {
+    private WebDriver driver;
+    private WebDriverWait wait;
+//   Elements Locators
+    private By homePageTitle=By.tagName("h2");
+    private By mobileList=By.cssSelector(".level0.nav-1.first");
 
-    @Test
-    public void HomePageTitleTest(){
-        assertTrue(homePage.isTitleVisible());
-    }
-    @Test
-    public void MobilePageTitleTest(){
-        MobilePage mobilePage=homePage.clickMobileOption();
-        assertTrue(mobilePage.isTitleVisible());
-        mobilePage.clickDropdown("http://live.techpanda.org/index.php/mobile.html?dir=asc&order=name");
-        assertTrue(mobilePage.isSortByNameSelected());
-    }
+    public HomePage(WebDriver driver){
+               this.driver=driver;
+               this.wait=new WebDriverWait(driver, Duration.ofSeconds(10));
+           }
+
+    public boolean isTitleVisible(){
+               wait.until(ExpectedConditions.visibilityOfElementLocated(homePageTitle));
+               return driver.findElement(homePageTitle).isDisplayed();
+           }
+
+           // move to Mobile page and give it the same driver
+    public MobilePage clickMobileOption(){
+               wait.until(ExpectedConditions.presenceOfElementLocated(mobileList));
+               driver.findElement(mobileList).click();
+               return new MobilePage(driver);
+          }
 
 }
+
 
